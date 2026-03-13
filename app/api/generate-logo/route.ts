@@ -12,7 +12,6 @@ export async function POST(req: Request) {
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
-
     if (!apiKey) {
       return NextResponse.json(
         { error: "GEMINI_API_KEY missing" },
@@ -21,9 +20,6 @@ export async function POST(req: Request) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-
-    // Note: Ensure your model supports "IMAGE" output. 
-    // gemini-1.5-flash-002 or newer is usually required for multimodal generation.
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
     });
@@ -32,15 +28,11 @@ export async function POST(req: Request) {
       contents: [
         {
           role: "user",
-          parts: [
-            {
-              text: `Generate a minimal logo for ${prompt}. Return only the image.`,
-            },
-          ],
+          parts: [{ text: `Generate a minimal logo for ${prompt}. Return only the image.` }],
         },
       ],
       generationConfig: {
-        // @ts-ignore - Some SDK versions have strict types for responseModalities
+        // @ts-ignore - Handles potential version mismatches in SDK types
         responseModalities: ["TEXT", "IMAGE"],
       },
     });
@@ -49,22 +41,28 @@ export async function POST(req: Request) {
     const parts = response?.candidates?.[0]?.content?.parts;
 
     if (!parts) {
-      throw new Error("No response parts received from Gemini");
+      throw new Error("No response parts received");
     }
 
     let savedPath: string | null = null;
 
     for (const part of parts) {
-      // 1. Check if inlineData and data exist
-      // 2. Assign to a constant to "narrow" the type for TypeScript
-      if (part.inlineData && part.inlineData.data) {
+      // FIX: Check explicitly for the string type and assign to a local constant
+      // This "narrows" the type so Buffer.from knows it is definitely a string.
+      if (part.inlineData && typeof part.inlineData.data === "string") {
         const base64Data: string = part.inlineData.data;
-
+        
+        // TypeScript is now happy because base64Data cannot be undefined here
         const buffer = Buffer.from(base64Data, "base64");
 
-        // Ensure the path is correct for a Next.js environment
-        const filePath = path.join(process.cwd(), "public", "logo.png");
+        const publicDir = path.join(process.cwd(), "public");
+        
+        // Ensure public directory exists (useful for some environments)
+        if (!fs.existsSync(publicDir)) {
+          fs.mkdirSync(publicDir, { recursive: true });
+        }
 
+        const filePath = path.join(publicDir, "logo.png");
         fs.writeFileSync(filePath, buffer);
 
         savedPath = "/logo.png";
@@ -73,20 +71,20 @@ export async function POST(req: Request) {
 
     if (!savedPath) {
       return NextResponse.json(
-        { error: "No image data found in the model response" },
+        { error: "Image data not found in response" },
         { status: 500 }
       );
     }
 
     return NextResponse.json({
       success: true,
-      logo: `${savedPath}?t=${Date.now()}`, // Added timestamp to bust browser cache
+      logo: `${savedPath}?t=${Date.now()}`, // Prevents browser caching old logos
     });
-  } catch (error: any) {
-    console.error("Logo Generation Error:", error);
 
+  } catch (error: any) {
+    console.error("API Error:", error);
     return NextResponse.json(
-      { error: error.message || "Logo generation failed" },
+      { error: error.message || "Internal Server Error" },
       { status: 500 }
     );
   }
