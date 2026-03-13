@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         },
       ],
       generationConfig: {
-        // @ts-ignore - Handles potential version mismatches in SDK types
+        // @ts-ignore - The SDK types might not recognize this yet
         responseModalities: ["TEXT", "IMAGE"],
       },
     });
@@ -47,17 +47,17 @@ export async function POST(req: Request) {
     let savedPath: string | null = null;
 
     for (const part of parts) {
-      // FIX: Check explicitly for the string type and assign to a local constant
-      // This "narrows" the type so Buffer.from knows it is definitely a string.
-      if (part.inlineData && typeof part.inlineData.data === "string") {
-        const base64Data: string = part.inlineData.data;
+      // THE FIX: Check for the nested data property
+      if (part.inlineData && part.inlineData.data) {
         
-        // TypeScript is now happy because base64Data cannot be undefined here
+        // Use 'as string' to force TypeScript to match the Buffer overload
+        const base64Data = part.inlineData.data as string;
+
         const buffer = Buffer.from(base64Data, "base64");
 
         const publicDir = path.join(process.cwd(), "public");
         
-        // Ensure public directory exists (useful for some environments)
+        // Ensure directory exists during build/runtime
         if (!fs.existsSync(publicDir)) {
           fs.mkdirSync(publicDir, { recursive: true });
         }
@@ -78,11 +78,11 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      logo: `${savedPath}?t=${Date.now()}`, // Prevents browser caching old logos
+      logo: `${savedPath}?t=${Date.now()}`,
     });
 
   } catch (error: any) {
-    console.error("API Error:", error);
+    console.error("Build Error Debug:", error);
     return NextResponse.json(
       { error: error.message || "Internal Server Error" },
       { status: 500 }
