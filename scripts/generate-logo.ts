@@ -6,7 +6,7 @@ import path from 'path';
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 console.log("API Key present:", apiKey ? "Yes" : "No");
 
-const ai = new GoogleGenAI({ apiKey: apiKey });
+const ai = new GoogleGenerativeAI({ apiKey: apiKey });
 
 async function generateLogo() {
   try {
