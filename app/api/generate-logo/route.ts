@@ -5,14 +5,10 @@ import path from "path";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const prompt: string | undefined = body?.prompt;
+    const { prompt } = await req.json();
 
     if (!prompt) {
-      return NextResponse.json(
-        { error: "Prompt is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Prompt required" }, { status: 400 });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
@@ -36,7 +32,7 @@ export async function POST(req: Request) {
           role: "user",
           parts: [
             {
-              text: `Generate a clean minimal logo for: ${prompt}. Return only the image.`,
+              text: `Generate a minimal logo for ${prompt}. Return only the image.`,
             },
           ],
         },
@@ -46,43 +42,40 @@ export async function POST(req: Request) {
       },
     });
 
-    const response = result.response;
+    const response = await result.response;
 
     const parts = response?.candidates?.[0]?.content?.parts;
 
     if (!parts) {
-      return NextResponse.json(
-        { error: "No image returned from model" },
-        { status: 500 }
-      );
+      throw new Error("No response parts received");
     }
 
-    let logoPath: string | null = null;
+    let savedPath: string | null = null;
 
     for (const part of parts) {
-      const base64Data = part.inlineData?.data;
+      if (part.inlineData?.data) {
+        const base64Data = part.inlineData.data;
 
-      if (!base64Data) continue;
+        const buffer = Buffer.from(base64Data as string, "base64");
 
-      const buffer = Buffer.from(base64Data, "base64");
+        const filePath = path.join(process.cwd(), "public", "logo.png");
 
-      const filePath = path.join(process.cwd(), "public", "logo.png");
+        fs.writeFileSync(filePath, buffer);
 
-      fs.writeFileSync(filePath, buffer);
-
-      logoPath = "/logo.png";
+        savedPath = "/logo.png";
+      }
     }
 
-    if (!logoPath) {
+    if (!savedPath) {
       return NextResponse.json(
-        { error: "Image generation failed" },
+        { error: "Image not generated" },
         { status: 500 }
       );
     }
 
     return NextResponse.json({
       success: true,
-      logo: logoPath,
+      logo: savedPath,
     });
   } catch (error) {
     console.error(error);
