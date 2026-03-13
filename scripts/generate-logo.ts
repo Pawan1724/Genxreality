@@ -1,5 +1,5 @@
 
-import { GoogleGenAI } from "google/generative-ai";
+import { GoogleGenAI } from "@google/generative-ai";
 import fs from 'fs';
 import path from 'path';
 
