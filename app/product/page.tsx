@@ -56,7 +56,7 @@ export default function ProductPage() {
               Low-Cost, High-Performance VR
             </p>
           </motion.div>
-          
+
           <div className="flex justify-center gap-4">
             <Button size="lg" className="bg-brand-primary text-black hover:bg-brand-secondary font-bold uppercase tracking-wider">Pre-order Now</Button>
             <Button variant="outline" size="lg" className="uppercase tracking-wider">Watch Keynote</Button>
@@ -65,90 +65,94 @@ export default function ProductPage() {
 
         {/* Background Product Image */}
         <div className="absolute inset-0 -z-10">
-           <Image 
-             src="https://picsum.photos/seed/vrheadsethero/1920/1080" 
-             alt="GenX One Headset" 
-             fill 
-             className="object-cover opacity-60"
-             priority
-           />
-           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/80" />
+          <Image
+            src="https://picsum.photos/seed/vrheadsethero/1920/1080"
+            alt="GenX One Headset"
+            fill
+            className="object-cover opacity-60"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/80" />
         </div>
       </section>
 
       {/* Product Vision */}
-      <Section>
+      <Section id="product" className="bg-zinc-900/30">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl md:text-6xl font-bold mb-6 uppercase">Innovations & <br/><span className="text-brand-primary">Showcase.</span></h2>
-              <p className="text-lg text-white/70 mb-6 font-light">
-                Advanced display technology at an accessible price point. We are redefining what is possible in affordable VR.
+              <h2 className="text-4xl md:text-6xl font-bold mb-6 uppercase">Innovations & <br /><span className="text-brand-primary">Showcase.</span></h2>
+              <p className="text-lg text-white/70 mb-6 font-light leading-relaxed">
+                We believe that advanced display technology shouldn't be gated behind exorbitant price tags.
+                GenX One offers a truly premium immersive experience at an accessible price point. We are redefining what is possible in affordable VR hardware for both enterprise and consumers.
               </p>
               <ul className="space-y-4">
                 <li className="flex items-center gap-3">
-                  <Check className="text-brand-primary" /> <span>Advanced Display Technology</span>
+                  <Check className="text-brand-primary" /> <span>Advanced Optical Clarity & Display Technology</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <Check className="text-brand-primary" /> <span>Smart AI Processing</span>
+                  <Check className="text-brand-primary" /> <span>Smart AI Processing for Low Latency Tracking</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <Check className="text-brand-primary" /> <span>Optimized Thermal Design</span>
+                  <Check className="text-brand-primary" /> <span>Optimized Thermal Design for Extended Sessions</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="text-brand-primary" /> <span>Ergonomic Weight Distribution</span>
                 </li>
               </ul>
             </div>
             <div className="relative aspect-square rounded-2xl overflow-hidden glass-panel border-brand-primary/20">
-               <Image 
-                 src="https://picsum.photos/seed/vrtech/800/800" 
-                 alt="Technology" 
-                 fill 
-                 className="object-cover hover:scale-105 transition-transform duration-700"
-               />
+              <Image
+                src="https://picsum.photos/seed/vrtech/800/800"
+                alt="Technology"
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-700"
+              />
             </div>
           </div>
         </Container>
       </Section>
 
       {/* Features Grid */}
-      <Section id="features" className="bg-zinc-900/30">
+      <Section id="features">
         <Container>
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 uppercase">Technical Specifications</h2>
-            <p className="text-white/60">Engineered for performance without compromise.</p>
+            <p className="text-white/60">Engineered for absolute performance without compromise.</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <FeatureCard 
+            <FeatureCard
               icon={<Eye className="w-8 h-8 text-brand-primary" />}
               title="Visual Fidelity"
               value="Advanced Display"
               description="High-resolution visuals at an accessible price point."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<Brain className="w-8 h-8 text-brand-secondary" />}
               title="AI Integration"
               value="Smart Processing"
               description="Enhanced user experiences through intelligent computing."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<Thermometer className="w-8 h-8 text-white" />}
               title="Efficiency"
               value="Superior Thermals"
               description="Optimized hardware design for extended usage."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<Battery className="w-8 h-8 text-brand-primary" />}
               title="Battery Life"
               value="Extended Play"
               description="Long-lasting power for immersive sessions."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<Layers className="w-8 h-8 text-brand-secondary" />}
               title="Integration"
               value="Seamless"
               description="Software and hardware working in harmony."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<Box className="w-8 h-8 text-white" />}
               title="Cost"
               value="Optimized"

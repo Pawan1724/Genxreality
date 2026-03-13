@@ -10,6 +10,8 @@ import {
   ArrowUpRight
 } from 'lucide-react';
 import Image from 'next/image';
+import Script from 'next/script';
+import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
@@ -134,35 +136,21 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>
               <h3 className="text-3xl md:text-5xl font-bold mb-6 uppercase">Innovations & <br /><span className="text-brand-primary">Showcase.</span></h3>
-              <p className="text-lg text-white/70 mb-6 font-light">
-                Advanced display technology at an accessible price point. We are redefining what is possible in affordable VR.
+              <p className="text-lg text-white/70 mb-8 font-light leading-relaxed">
+                Advanced display technology at an accessible price point. The GenX One offers stunning visual clarity, seamless AI integration, and robust thermal performance without the premium price tag.
               </p>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-3"><Check className="text-brand-primary" /> <span>Advanced Display Technology</span></li>
-                <li className="flex items-center gap-3"><Check className="text-brand-primary" /> <span>Smart AI Processing</span></li>
-                <li className="flex items-center gap-3"><Check className="text-brand-primary" /> <span>Optimized Thermal Design</span></li>
-              </ul>
+              <Link href="/product">
+                <Button className="bg-brand-primary text-black hover:bg-brand-secondary font-bold uppercase tracking-wider flex items-center gap-2">
+                  Explore Genx One <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
             </div>
             <div className="relative aspect-square rounded-2xl overflow-hidden glass-panel border-brand-primary/20">
               <Image src="https://picsum.photos/seed/vrtech/800/800" alt="Technology" fill className="object-cover hover:scale-105 transition-transform duration-700" />
             </div>
-          </div>
-
-          {/* Specs Grid */}
-          <div className="text-center mb-16">
-            <h3 className="text-3xl font-bold mb-4 uppercase">Technical Specifications</h3>
-            <p className="text-white/60">Engineered for performance without compromise.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <SpecCard icon={<Eye className="w-8 h-8 text-brand-primary" />} title="Visual Fidelity" value="Advanced Display" description="High-resolution visuals at an accessible price point." />
-            <SpecCard icon={<Brain className="w-8 h-8 text-brand-primary" />} title="AI Integration" value="Smart Processing" description="Enhanced user experiences through intelligent computing." />
-            <SpecCard icon={<Thermometer className="w-8 h-8 text-brand-primary" />} title="Efficiency" value="Superior Thermals" description="Optimized hardware design for extended usage." />
-            <SpecCard icon={<Battery className="w-8 h-8 text-brand-primary" />} title="Battery Life" value="Extended Play" description="Long-lasting power for immersive sessions." />
-            <SpecCard icon={<Layers className="w-8 h-8 text-brand-primary" />} title="Integration" value="Seamless" description="Software and hardware working in harmony." />
-            <SpecCard icon={<Box className="w-8 h-8 text-brand-primary" />} title="Cost" value="Optimized" description="High-quality parts at optimized costs." />
           </div>
         </Container>
       </Section>
@@ -179,21 +167,24 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service) => (
-              <div key={service.id} className="service-item glass-card p-8 rounded-2xl border border-white/10 hover:border-brand-primary/30 transition-all duration-300 group">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {services.slice(0, 3).map((service) => (
+              <div key={service.id} className="service-item glass-card p-8 rounded-2xl border border-white/10 group">
                 <div className="mb-6 p-4 bg-white/5 rounded-2xl w-fit border border-white/10 group-hover:bg-brand-primary/10 transition-colors">
                   {serviceIconMap[service.icon] || <Building className="w-12 h-12 text-brand-primary" />}
                 </div>
-                <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
-                <p className="text-white/70 mb-6 leading-relaxed">{service.description}</p>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-2 text-white/60 text-sm"><div className="w-1.5 h-1.5 rounded-full bg-brand-primary" /> Custom Development</li>
-                  <li className="flex items-center gap-2 text-white/60 text-sm"><div className="w-1.5 h-1.5 rounded-full bg-brand-primary" /> Integration Support</li>
-                  <li className="flex items-center gap-2 text-white/60 text-sm"><div className="w-1.5 h-1.5 rounded-full bg-brand-primary" /> 24/7 Maintenance</li>
-                </ul>
+                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+                <p className="text-white/70 text-sm line-clamp-3 mb-6">{service.description}</p>
               </div>
             ))}
+          </div>
+
+          <div className="flex justify-center">
+            <Link href="/services">
+              <Button variant="outline" className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-black uppercase tracking-wider flex items-center gap-2">
+                View All Services <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
           </div>
         </Container>
       </Section>
@@ -253,11 +244,11 @@ export default function Home() {
         <Container>
           <h2 className="text-4xl md:text-6xl font-bold mb-12 uppercase">Latest <span className="text-brand-primary">Insights</span></h2>
           {/* NEWS ROW */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24">
-            {articles.map((article) => (
-              <div key={article.id} className="news-card flex flex-col h-full glass-card rounded-2xl overflow-hidden border border-white/10 hover:border-brand-primary/30 transition-all duration-300">
-                <div className="relative aspect-[16/9] overflow-hidden bg-zinc-900">
-                  <Image src={article.coverImage} alt={article.title} fill className="object-cover transition-transform duration-700 hover:scale-105" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            {articles.slice(0, 4).map((article) => (
+              <div key={article.id} className="news-card flex flex-col h-full glass-card rounded-2xl overflow-hidden border border-white/10 group">
+                <div className="relative aspect-[16/9] overflow-hidden bg-zinc-900 border-b border-white/10">
+                  <Image src={article.coverImage} alt={article.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-mono uppercase border border-white/10">
                     {article.category}
                   </div>
@@ -266,77 +257,34 @@ export default function Home() {
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-xs text-white/40 font-mono">{article.date}</span>
                   </div>
-                  <h3 className="text-lg font-bold mb-2">{article.title}</h3>
+                  <h3 className="text-lg font-bold mb-2 group-hover:text-brand-primary transition-colors">{article.title}</h3>
                   <p className="text-white/60 text-sm line-clamp-2">{article.excerpt}</p>
                 </div>
               </div>
             ))}
           </div>
 
+          <div className="flex justify-center mb-24">
+            <Link href="/news">
+              <Button variant="outline" className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-black uppercase tracking-wider flex items-center gap-2">
+                View All News & Research <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+
           {/* ═══════════════════════════════════════════════════════════ */}
           {/* BLOGS — Linked Posts / Social Updates */}
           {/* ═══════════════════════════════════════════════════════════ */}
-          <div id="blogs" className="pt-12 border-t border-white/10">
-            <h2 className="text-4xl md:text-5xl font-bold mb-12 uppercase text-center">Company <span className="text-brand-primary">Updates</span></h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Blog Post 1 */}
-              <div className="glass-card p-6 rounded-2xl border border-white/10">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden relative border border-brand-primary/30">
-                    <Image src="https://picsum.photos/seed/ceo/100/100" alt="CEO" fill className="object-cover" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-brand-primary">GenXReality Team</h4>
-                    <p className="text-xs text-white/50">Posted exactly 2 days ago</p>
-                  </div>
-                </div>
-                <p className="text-white/80 text-sm leading-relaxed mb-4">
-                  We are thrilled to announce that GenX One has entered the final prototype phase! The team has done an incredible job driving down production costs while maintaining premium optical fidelity. 🚀 #VR #Innovation #GenXReality
-                </p>
-                <div className="relative aspect-video rounded-xl overflow-hidden">
-                  <Image src="https://picsum.photos/seed/prototype/600/400" alt="Post attachment" fill className="object-cover" />
-                </div>
-              </div>
-
-              {/* Blog Post 2 */}
-              <div className="glass-card p-6 rounded-2xl border border-white/10">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden relative border border-brand-primary/30">
-                    <Image src="https://picsum.photos/seed/cto/100/100" alt="CTO" fill className="object-cover" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-brand-primary">GenXReality Team</h4>
-                    <p className="text-xs text-white/50">Posted 1 week ago</p>
-                  </div>
-                </div>
-                <p className="text-white/80 text-sm leading-relaxed mb-4">
-                  Our latest thermal management system passed stress testing today. By rethinking airflow paths, we managed to increase sustained performance by 40% without adding bulk or fan noise. Small details, massive impact. ❄️🔋 #Engineering
-                </p>
-                <div className="relative aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-white/5 flex items-center justify-center">
-                  <Thermometer className="w-12 h-12 text-brand-primary/50" />
-                </div>
-              </div>
-
-              {/* Blog Post 3 */}
-              <div className="glass-card p-6 rounded-2xl border border-white/10">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden relative border border-brand-primary/30">
-                    <Image src="https://picsum.photos/seed/design/100/100" alt="Design" fill className="object-cover" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-brand-primary">GenXReality Team</h4>
-                    <p className="text-xs text-white/50">Posted 2 weeks ago</p>
-                  </div>
-                </div>
-                <p className="text-white/80 text-sm leading-relaxed mb-4">
-                  Accessibility is not an afterthought; it&apos;s our core mission. We&apos;ve published our new paper on reducing motion sickness in high-latency network drops for enterprise VR training. Read our insights. 🌐👁️ #WebXR #SpatialComputing
-                </p>
-                <div className="relative aspect-video rounded-xl overflow-hidden bg-brand-primary/10 border border-brand-primary/20 flex flex-col items-center justify-center text-center p-4">
-                  <Globe className="w-8 h-8 text-brand-primary mb-2" />
-                  <span className="font-bold text-white uppercase text-sm">Read the Paper</span>
-                </div>
-              </div>
-            </div>
+          <div id="blogs" className="pt-12 border-t border-white/10 text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 uppercase">Company <span className="text-brand-primary">Updates</span></h2>
+            <p className="text-lg text-white/60 mb-8 font-light max-w-2xl mx-auto">
+              Follow our journey and read deep dives directly from our team in our latest blogs.
+            </p>
+            <Link href="/blogs">
+              <Button className="bg-brand-primary text-black hover:bg-brand-secondary font-bold uppercase tracking-wider mb-8">
+                Go to Company Updates
+              </Button>
+            </Link>
           </div>
         </Container>
       </Section>
@@ -420,29 +368,18 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="glass-panel p-8 md:p-10 rounded-3xl border-brand-primary/20">
-              <h3 className="text-2xl font-bold mb-6 uppercase tracking-wide">Send a Message</h3>
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium text-brand-primary uppercase tracking-wider">Name</label>
-                    <input type="text" id="name" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-brand-primary text-white transition-colors" placeholder="John Doe" />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium text-brand-primary uppercase tracking-wider">Email</label>
-                    <input type="email" id="email" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-brand-primary text-white transition-colors" placeholder="john@company.com" />
-                  </div>
+            <div className="glass-panel p-6 md:p-10 rounded-3xl border-brand-primary/20 flex flex-col gap-10">
+              <div className="w-full">
+                <h3 className="text-2xl font-bold mb-6 uppercase tracking-wide">Send a Message</h3>
+                <div className="elfsight-app-442eee75-a698-48d4-a12d-f7e7508c2be5" data-elfsight-app-lazy></div>
+              </div>
+
+              <div className="w-full border-t border-white/10 pt-8">
+                <h3 className="text-2xl font-bold mb-6 uppercase tracking-wide">Book a Consultation</h3>
+                <div className="w-full bg-black/40 rounded-2xl p-4 border border-white/5">
+                  <div className="elfsight-app-df4f0fb5-7643-4ace-b1de-6544e4a8e337" data-elfsight-app-lazy></div>
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="company" className="text-sm font-medium text-brand-primary uppercase tracking-wider">Company</label>
-                  <input type="text" id="company" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-brand-primary text-white transition-colors" placeholder="Acme Inc." />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium text-brand-primary uppercase tracking-wider">Message</label>
-                  <textarea id="message" rows={4} className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-brand-primary text-white transition-colors" placeholder="Tell us about your project..." />
-                </div>
-                <Button className="w-full bg-brand-primary text-black hover:bg-brand-secondary font-bold uppercase tracking-wider">Send Message</Button>
-              </form>
+              </div>
             </div>
           </div>
         </Container>
