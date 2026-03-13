@@ -25,20 +25,20 @@ export function Footer() {
           <div>
             <h4 className="font-display font-bold mb-6">Platform</h4>
             <ul className="space-y-4">
-              <FooterLink href="#product">VR Headset</FooterLink>
-              <FooterLink href="#services">XR Solutions</FooterLink>
-              <FooterLink href="#services">Developers</FooterLink>
-              <FooterLink href="#news">Research</FooterLink>
+              <FooterLink href="/product">VR Headset</FooterLink>
+              <FooterLink href="/services">XR Solutions</FooterLink>
+              <FooterLink href="/services">Developers</FooterLink>
+              <FooterLink href="/news">Research</FooterLink>
             </ul>
           </div>
 
           <div>
             <h4 className="font-display font-bold mb-6">Company</h4>
             <ul className="space-y-4">
-              <FooterLink href="#about">About Us</FooterLink>
-              <FooterLink href="#news">News</FooterLink>
-              <FooterLink href="#news">Blog</FooterLink>
-              <FooterLink href="#contact">Contact</FooterLink>
+              <FooterLink href="/#about">About Us</FooterLink>
+              <FooterLink href="/news">News</FooterLink>
+              <FooterLink href="/blogs">Blog</FooterLink>
+              <FooterLink href="/contact">Contact</FooterLink>
             </ul>
           </div>
         </div>

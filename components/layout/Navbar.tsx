@@ -10,22 +10,17 @@ import { Container } from '@/components/ui/Container';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Products', href: '#product' },
-  { name: 'Services', href: '#services' },
-  { name: 'News', href: '#news' },
-  { name: 'Blogs', href: '#blogs' },
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/product' },
+  { name: 'Services', href: '/services' },
+  { name: 'News', href: '/news' },
+  { name: 'Blogs', href: '/blogs' },
 ];
-
-// Section IDs to track for active state
-const sectionIds = ['contact', 'blogs', 'news', 'services', 'product', 'about', 'home'];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
@@ -46,17 +41,7 @@ export function Navbar() {
         setShowNavbar(true);
       }
 
-      // Detect active section
-      const scrollPos = window.scrollY + window.innerHeight / 3;
-      let found = '';
-      for (const id of sectionIds) {
-        const el = document.getElementById(id);
-        if (el && scrollPos >= el.offsetTop) {
-          found = id;
-          break;
-        }
-      }
-      setActiveSection(found);
+      // Remove active section tracking logic as we use pages now
     };
 
     if (!isHomePage) {
@@ -75,8 +60,7 @@ export function Navbar() {
   }, [pathname]);
 
   const isActive = (href: string) => {
-    if (href === '#') return activeSection === '';
-    return `#${activeSection}` === href;
+    return pathname === href;
   };
 
   return (
@@ -123,10 +107,10 @@ export function Navbar() {
 
           {/* CTA — Contact Us */}
           <Link
-            href="#contact"
+            href="/contact"
             className={cn(
               'ml-2 px-5 py-2 text-sm font-bold uppercase tracking-wider rounded-full transition-all duration-300 border-2',
-              activeSection === 'contact'
+              isActive('/contact')
                 ? 'bg-brand-primary text-black border-brand-primary shadow-[0_0_20px_rgba(0,255,65,0.4)]'
                 : 'bg-brand-primary/10 text-brand-primary border-brand-primary/50 hover:bg-brand-primary hover:text-black hover:shadow-[0_0_20px_rgba(0,255,65,0.3)]'
             )}
@@ -183,7 +167,7 @@ export function Navbar() {
                 </div>
                 <div className="mt-auto pt-8">
                   <Link
-                    href="#contact"
+                    href="/contact"
                     onClick={() => setIsOpen(false)}
                     className="flex justify-center w-full py-4 text-lg font-bold uppercase bg-brand-primary text-black rounded-xl hover:shadow-[0_0_20px_rgba(0,255,65,0.4)] transition-all"
                   >
