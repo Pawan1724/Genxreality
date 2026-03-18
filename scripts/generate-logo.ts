@@ -1,50 +1,53 @@
-
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import fs from 'fs';
 import path from 'path';
 
-const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
-console.log("API Key present:", apiKey ? "Yes" : "No");
+// 1. Get the key
+const apiKey = process.env.GEMINI_API_KEY;
 
-const ai = new GoogleGenAI({ apiKey: apiKey });
+// 2. Immediate check: If no key, stop the build with a clear error
+if (!apiKey) {
+  throw new Error("GEMINI_API_KEY is not defined in environment variables");
+}
+
+// 3. Pass the string DIRECTLY (not as an object)
+const ai = new GoogleGenerativeAI(apiKey);
 
 async function generateLogo() {
   try {
-    console.log("Generating logo with gemini-2.5-flash-image...");
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-image',
-      contents: {
-        parts: [
-          {
-            text: 'A futuristic, minimalist VR headset logo, white on a transparent background, high quality, vector style, flat design, icon only',
-          },
-        ],
+    const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
+    
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: "Generate a minimal logo. Return only the image." }] }],
+      generationConfig: { 
+        // @ts-ignore
+        responseModalities: ["TEXT", "IMAGE"] 
       },
-      // gemini-2.5-flash-image does not support imageConfig with aspectRatio/imageSize in the same way, 
-      // or at least the error might be related to the model.
-      // Let's remove imageConfig for now as it's optional or defaults to 1:1.
     });
 
-    console.log("Response received.");
-    const candidate = response.candidates?.[0];
-    if (!candidate) {
-        console.error("No candidates found");
-        return;
-    }
+    const response = await result.response;
+    const parts = response?.candidates?.[0]?.content?.parts;
 
-    for (const part of candidate.content.parts) {
-      if (part.inlineData) {
-        const base64Data = part.inlineData.data;
+    if (!parts) return;
+
+    for (const part of parts) {
+      if (part.inlineData?.data) {
+        const base64Data = part.inlineData.data as string;
         const buffer = Buffer.from(base64Data, 'base64');
-        const filePath = path.join(process.cwd(), 'public', 'logo.png');
+        
+        const publicDir = path.join(process.cwd(), 'public');
+        if (!fs.existsSync(publicDir)) {
+          fs.mkdirSync(publicDir, { recursive: true });
+        }
+
+        const filePath = path.join(publicDir, 'logo.png');
         fs.writeFileSync(filePath, buffer);
-        console.log(`Logo saved to ${filePath}`);
-        return;
+        console.log("Logo successfully saved!");
       }
     }
-    console.error("No image data found in response");
   } catch (error) {
-    console.error("Error generating logo:", error);
+    console.error("Generation failed:", error);
+    process.exit(1); // Tell the build system something went wrong
   }
 }
 

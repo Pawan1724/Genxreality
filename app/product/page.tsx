@@ -83,7 +83,7 @@ export default function ProductPage() {
             <div>
               <h2 className="text-4xl md:text-6xl font-bold mb-6 uppercase">Innovations & <br /><span className="text-brand-primary">Showcase.</span></h2>
               <p className="text-lg text-white/70 mb-6 font-light leading-relaxed">
-                We believe that advanced display technology shouldn't be gated behind exorbitant price tags.
+                We believe that advanced display technology shouldn&apos;t be gated behind exorbitant price tags.
                 GenX One offers a truly premium immersive experience at an accessible price point. We are redefining what is possible in affordable VR hardware for both enterprise and consumers.
               </p>
               <ul className="space-y-4">

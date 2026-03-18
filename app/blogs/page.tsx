@@ -32,7 +32,7 @@ export default function BlogsPage() {
                     <div className="max-w-4xl mx-auto text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-bold mb-6 uppercase">Our <span className="text-brand-primary">Latest Posts</span></h2>
                         <p className="text-lg text-white/60 font-light leading-relaxed">
-                            We frequently share deep dives into spatial computing, engineering challenges we've solved, and announcements about the GenX One. Read our latest updates directly from our LinkedIn feed below.
+                            We frequently share deep dives into spatial computing, engineering challenges we&apos;ve solved, and announcements about the GenX One. Read our latest updates directly from our LinkedIn feed below.
                         </p>
                     </div>
 
